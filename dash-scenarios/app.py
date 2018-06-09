@@ -2,6 +2,7 @@ import os
 import pickle
 import copy
 import datetime as dt
+import re
 
 import pandas as pd
 import xarray as xr
@@ -10,8 +11,6 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-
-from components import file_selector
 
 
 app = dash.Dash(__name__)
@@ -66,6 +65,19 @@ layout = dict(
 )
 
 
+# Locate temperature files
+directory = './data'
+pattern = r'run_output_\d{2}.nc'
+temperature_options = []
+
+for file in os.listdir(directory):
+    if re.match(pattern, file):
+        temperature_options.append({
+            'label': os.path.splitext(file)[0],
+            'value': os.path.join(directory , file)
+            }
+        )
+
 # Create app layout
 app.layout = html.Div(
     [
@@ -114,7 +126,11 @@ app.layout = html.Div(
 
         html.Div(
             [
-                file_selector('./data',r'run_output_\d{2}.nc')
+                dcc.Dropdown(
+                    id='run_selection',
+                    options=temperature_options,
+                    value=temperature_options[0]['value']
+                )
             ]
         ),
 

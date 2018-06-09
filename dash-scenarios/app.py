@@ -72,8 +72,10 @@ temperature_options = []
 
 for file in os.listdir(directory):
     if re.match(pattern, file):
+        temperature = float(file[-5:-3])/10
+        label = '%2.1f\u00b0C above pre-industrial levels' % temperature
         temperature_options.append({
-            'label': os.path.splitext(file)[0],
+            'label': label,
             'value': os.path.join(directory , file)
             }
         )
@@ -126,6 +128,7 @@ app.layout = html.Div(
 
         html.Div(
             [
+                html.H5('Select temperature'),
                 dcc.Dropdown(
                     id='run_selection',
                     options=temperature_options,

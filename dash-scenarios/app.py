@@ -11,12 +11,15 @@ from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 
+from components import file_selector
+
+
 app = dash.Dash(__name__)
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
 
 # Load data
 df = pd.read_csv('./data/glacier_characteristics.csv')
-ds = xr.open_dataset('./data/run_output_rdn_tstar.nc')
+ds = xr.open_dataset('./data/run_output_00.nc')
 
 area_range = [int(np.floor(df.rgi_area_km2.min())), int(np.ceil(df.rgi_area_km2.max()))]
 
@@ -111,6 +114,12 @@ app.layout = html.Div(
 
         html.Div(
             [
+                file_selector('./data',r'run_output_\d{2}.nc')
+            ]
+        ),
+
+        html.Div(
+            [
                 html.Div(
                     [
                         dcc.Graph(id='main_graph')
@@ -181,8 +190,11 @@ def make_main_figure(area_slider, main_graph_layout):
 
 # Main graph -> individual graph
 @app.callback(Output('individual_graph', 'figure'),
-              [Input('main_graph', 'hoverData')])
-def make_individual_figure(main_graph_hover):
+              [Input('main_graph', 'hoverData'),
+              Input('run_selection','value')])
+def make_individual_figure(main_graph_hover,run_selection):
+    
+    ds = xr.open_dataset(run_selection)
 
     layout_individual = copy.deepcopy(layout)
 
@@ -227,6 +239,9 @@ def make_individual_figure(main_graph_hover):
 
     figure = dict(data=data, layout=layout_individual)
     return figure
+
+
+
 
 # Main
 if __name__ == '__main__':

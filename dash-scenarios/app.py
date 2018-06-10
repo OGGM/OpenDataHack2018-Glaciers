@@ -12,6 +12,8 @@ from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 
+import plotly.graph_objs as go
+
 
 app = dash.Dash(__name__)
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
@@ -229,6 +231,7 @@ def make_individual_figure(main_graph_hover,run_selection):
     t = main_graph_hover['points'][0]['text']
     dff = df.loc[df.text == t]
 
+    
     # Return blank chart if no data available
     if len(dff) == 0 or len(run_selection) == 0:
         annotation = dict(
@@ -256,7 +259,7 @@ def make_individual_figure(main_graph_hover,run_selection):
         rid = dff.rgi_id.values[0]
         sel = ds.sel(rgi_id=rid).area * 1e-6
         data.append(
-            dict(
+            go.Scatter(
                 type='scatter',
                 mode='lines+markers',
                 name=drop_down_label(run),
@@ -265,17 +268,26 @@ def make_individual_figure(main_graph_hover,run_selection):
                 line=dict(
                     shape="spline",
                     smoothing=2,
-                    width=1,
-                    #color='#fac1b7'
+                    width=1
                 ),
                 marker=dict(symbol='diamond-open')
             )
         )
         
-
+    layout_graph = go.Layout(
+        title=rid,
+        xaxis=dict(title='Time (years)'),
+        yaxis=dict(title='Area (km\u00b2)'),
+        showlegend=True,
+        legend=go.Legend(
+                x=0,
+                y=1.0
+            ),
+            margin=go.Margin(l=40, r=0, t=40, b=30)
+    )
     layout_individual['title'] = rid + ': Area (km2)'
 
-    figure = dict(data=data, layout=layout_individual)
+    figure = dict(data=data, layout=layout_graph)
     return figure
 
 

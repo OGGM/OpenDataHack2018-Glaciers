@@ -11,7 +11,6 @@ theme: ./white_nb.css
 [Fabien Maussion](http://fabienmaussion.info),
 [Patrick Leedham](https://github.com/PaleTomato)
 
-
 ---
 
 ## How to use these slides
@@ -37,9 +36,9 @@ theme: ./white_nb.css
 
 Quote from Marzeion et al., 2012:
 
-_"Glaciers are natural low-pass filter of the climate system..."_
+_"Glaciers are natural low-pass filters of the climate system..."_
 
-_"... but the low-pass filter comes without a manual"_  <!-- .element: class="fragment" -->
+_"... but the filter comes without a manual."_  <!-- .element: class="fragment" -->
 
 ---
 
@@ -52,32 +51,38 @@ _"... but the low-pass filter comes without a manual"_  <!-- .element: class="fr
 
 ## Data
 
-- Glaciers extent data from 1995 to 2015 from the Randolph Glacier Inventory
+- Glaciers extent data from the Randolph Glacier Inventory
 - ERA-Interim / ERA-5
-
-When in CDS:
-- CMIP
+- When available (soon?): CMIP + PMIP + much more?
 
 ----
+
+## Tools
+
+- Science: [Open Global Glacier Model](http://oggm.org)
+- Visualization: [Dash+Plotly](https://plot.ly/products/dash/)
+- Maps: [MapBox](https://www.mapbox.com/)
+
+---
 
 ## Use case 1: <br> world glacier explorer
 
 - Learn where glaciers are located and why
-- https://dash.klima.uni-bremen.de/dash_explore
+- https://dash.klima.uni-bremen.de/apps/explore
 
 ----
 
 ## Use case 2: <br> climate scenarios
 
 - Glacier change under various projections
-- https://dash.klima.uni-bremen.de/dash_scenarios
+- https://dash.klima.uni-bremen.de/apps/scenarios
 
 ----
 
-## Use case 2: <br> geometry changes
+## Use case 3: <br> geometry changes
 
 - Glacier geometry change
-- https://dash.klima.uni-bremen.de/dash_geometry
+- https://dash.klima.uni-bremen.de/apps/geometry
 
 ---
 

@@ -65,6 +65,14 @@ layout = dict(
 )
 
 
+def drop_down_label(filename):
+    """
+    Returns the decriptive name to populate the drop-down menu for filename.
+    """
+    temperature = float(filename[-5:-3])/10
+    return '%2.1f\u00b0C above pre-industrial levels' % temperature
+
+
 # Locate temperature files
 directory = './data'
 pattern = r'run_output_\d{2}.nc'
@@ -72,8 +80,7 @@ temperature_options = []
 
 for file in os.listdir(directory):
     if re.match(pattern, file):
-        temperature = float(file[-5:-3])/10
-        label = '%2.1f\u00b0C above pre-industrial levels' % temperature
+        label = drop_down_label(file)
         temperature_options.append({
             'label': label,
             'value': os.path.join(directory , file)
@@ -132,7 +139,8 @@ app.layout = html.Div(
                 dcc.Dropdown(
                     id='run_selection',
                     options=temperature_options,
-                    value=temperature_options[0]['value']
+                    value=temperature_options[0]['value'],
+                    multi=True
                 )
             ]
         ),
@@ -213,8 +221,6 @@ def make_main_figure(area_slider, main_graph_layout):
               Input('run_selection','value')])
 def make_individual_figure(main_graph_hover,run_selection):
     
-    ds = xr.open_dataset(run_selection)
-
     layout_individual = copy.deepcopy(layout)
 
     if main_graph_hover is None:
@@ -223,7 +229,8 @@ def make_individual_figure(main_graph_hover,run_selection):
     t = main_graph_hover['points'][0]['text']
     dff = df.loc[df.text == t]
 
-    if len(dff) == 0:
+    # Return blank chart if no data available
+    if len(dff) == 0 or len(run_selection) == 0:
         annotation = dict(
             text='No data available',
             x=0.5,
@@ -235,31 +242,41 @@ def make_individual_figure(main_graph_hover,run_selection):
         )
         layout_individual['annotations'] = [annotation]
         data = []
-    else:
+
+        return dict(data=data, layout=layout_individual)
+    
+    if type(run_selection) == str:
+        run_selection = [run_selection]
+
+    # Loop through each run in selected
+    data = []
+    for run in run_selection:
+
+        ds = xr.open_dataset(run)
         rid = dff.rgi_id.values[0]
         sel = ds.sel(rgi_id=rid).area * 1e-6
-        data = [
+        data.append(
             dict(
                 type='scatter',
                 mode='lines+markers',
-                name='Gas Produced (mcf)',
+                name=drop_down_label(run),
                 x=sel.time.data,
                 y=sel.data,
                 line=dict(
                     shape="spline",
                     smoothing=2,
                     width=1,
-                    color='#fac1b7'
+                    #color='#fac1b7'
                 ),
                 marker=dict(symbol='diamond-open')
-            ),
-        ]
-        layout_individual['title'] = rid + ': Area (km2)'
+            )
+        )
+        
+
+    layout_individual['title'] = rid + ': Area (km2)'
 
     figure = dict(data=data, layout=layout_individual)
     return figure
-
-
 
 
 # Main

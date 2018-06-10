@@ -101,7 +101,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.H1(
-                    'OGGM Map demo',
+                    'OGGM Glacier geometry demo',
                     className='eight columns',
                 ),
                 html.Img(
@@ -138,16 +138,16 @@ app.layout = html.Div(
                     [
                         dcc.Graph(id='main_graph')
                     ],
-                    className='eight columns',
+                    className='ten columns',
                     style={'margin-top': '20'}
                 ),
-                html.Div(
-                    [
-                        dcc.Graph(id='individual_graph')
-                    ],
-                    className='four columns',
-                    style={'margin-top': '20'}
-                ),
+                # html.Div(
+                #     [
+                #         dcc.Graph(id='individual_graph')
+                #     ],
+                #     className='four columns',
+                #     style={'margin-top': '20'}
+                # ),
             ],
             className='row'
         ),
@@ -221,48 +221,48 @@ def make_main_figure(time_slider, main_graph_layout):
     return figure
 
 
-# Main graph -> individual graph
-@app.callback(Output('individual_graph', 'figure'),
-              [Input('time_slider', 'value')])
-def make_individual_figure(time_slider):
-
-    _layout = copy.deepcopy(layout)
-
-    if True:
-        annotation = dict(
-            text='No data available',
-            x=0.5,
-            y=0.5,
-            align="center",
-            showarrow=False,
-            xref="paper",
-            yref="paper"
-        )
-        _layout['annotations'] = [annotation]
-        data = []
-    else:
-        rid = dff.rgi_id.values[0]
-        sel = ds.sel(rgi_id=rid).area * 1e-6
-        data = [
-            dict(
-                type='scatter',
-                mode='lines+markers',
-                name='Gas Produced (mcf)',
-                x=sel.time.data,
-                y=sel.data,
-                line=dict(
-                    shape="spline",
-                    smoothing=2,
-                    width=1,
-                    color='#fac1b7'
-                ),
-                marker=dict(symbol='diamond-open')
-            ),
-        ]
-        _layout['title'] = rid + ': Area (km2)'
-
-    figure = dict(data=data, layout=_layout)
-    return figure
+# # Main graph -> individual graph
+# @app.callback(Output('individual_graph', 'figure'),
+#               [Input('time_slider', 'value')])
+# def make_individual_figure(time_slider):
+#
+#     _layout = copy.deepcopy(layout)
+#
+#     if True:
+#         annotation = dict(
+#             text='No data available',
+#             x=0.5,
+#             y=0.5,
+#             align="center",
+#             showarrow=False,
+#             xref="paper",
+#             yref="paper"
+#         )
+#         _layout['annotations'] = [annotation]
+#         data = []
+#     else:
+#         rid = dff.rgi_id.values[0]
+#         sel = ds.sel(rgi_id=rid).area * 1e-6
+#         data = [
+#             dict(
+#                 type='scatter',
+#                 mode='lines+markers',
+#                 name='Gas Produced (mcf)',
+#                 x=sel.time.data,
+#                 y=sel.data,
+#                 line=dict(
+#                     shape="spline",
+#                     smoothing=2,
+#                     width=1,
+#                     color='#fac1b7'
+#                 ),
+#                 marker=dict(symbol='diamond-open')
+#             ),
+#         ]
+#         _layout['title'] = rid + ': Area (km2)'
+#
+#     figure = dict(data=data, layout=_layout)
+#     return figure
 
 
 # Main

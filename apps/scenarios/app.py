@@ -159,7 +159,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.H1(
-                    'OGGM Map demo',
+                    'OGGM climate scenarios demo',
                     className='eight columns',
                 ),
                 html.Img(

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <title>Create your own website with git and github-pages</title>
+        <title>OpenDataHack2018 - glaciers</title>
         <link rel="stylesheet" href="./css/reveal.css">
         <link rel="stylesheet" href="./white_nb.css" id="theme">
         <link rel="stylesheet" href="./css/highlight/zenburn.css">
@@ -19,11 +19,11 @@
 
 #### Open climate data seen by mountain glaciers as a natural low-pass filter
 
-<img align="center" width="30%" src="https://raw.githubusercontent.com/OGGM/oggm/master/docs/_static/logos/logo.png"/>
+<img align="center" width="20%" src="https://raw.githubusercontent.com/OGGM/oggm/master/docs/_static/logos/logo.png"/>
+<img align="center" width="87%" src="https://events.ecmwf.int/event/79/images/5-logo-banner3.jpg"/>
 
 [Fabien Maussion](http://fabienmaussion.info),
 [Patrick Leedham](https://github.com/PaleTomato)
-
 </script></section><section  data-markdown><script type="text/template">
 ## How to use these slides
 
@@ -33,25 +33,53 @@
 - ``<esc>``: toggle overview mode
 
 </script></section><section ><section data-markdown><script type="text/template">
-## Problem
+## Motivation
 
 - Glaciers allow people to perceive slow changes of the climate system
   that would otherwise be superimposed by short-term noise  <!-- .element: class="fragment" -->
-- shrinking glaciers are an icon of climate change  <!-- .element: class="fragment" -->
-- glaciers are complex! <br> "The low-pass filter comes without a manual"  <!-- .element: class="fragment" -->
+- Glacier melt increases risks and geohazards  <!-- .element: class="fragment" -->
+- Shrinking glaciers are an icon of climate change  <!-- .element: class="fragment" -->
 </script></section><section data-markdown><script type="text/template">
+## Problem: <br> glaciers are complex!
+
+Quote from Marzeion et al., 2012:
+
+_"Glaciers are natural low-pass filters of the climate system..."_
+
+_"... but the filter comes without a manual."_  <!-- .element: class="fragment" -->
+</script></section></section><section ><section data-markdown><script type="text/template">
 ## Hack
 
 - create an educational and reactive web application showing the impact of
   climate change on glaciers
+</script></section><section data-markdown><script type="text/template">
+## Data
+
+- Glaciers extent data from the Randolph Glacier Inventory
+- ERA-Interim / ERA-5
+- When available (soon?): CMIP + PMIP + much more?
+</script></section><section data-markdown><script type="text/template">
+## Tools
+
+- Science: [Open Global Glacier Model](http://oggm.org)
+- Visualization: [Dash+Plotly](https://plot.ly/products/dash/)
+- Maps: [MapBox](https://www.mapbox.com/)
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Use case 1: <br> world glacier explorer
+
+- Learn where glaciers are located and why
+- https://dash.klima.uni-bremen.de/apps/explore
+</script></section><section data-markdown><script type="text/template">
+## Use case 2: <br> climate scenarios
+
+- Glacier change under various projections
+- https://dash.klima.uni-bremen.de/apps/scenarios
+</script></section><section data-markdown><script type="text/template">
+## Use case 3: <br> geometry changes
+
+- Glacier geometry change
+- https://dash.klima.uni-bremen.de/apps/geometry
 </script></section></section><section  data-markdown><script type="text/template">
-## Hack-dash 1: <br> world glacier explorer
-
-
-</script></section><section  data-markdown><script type="text/template">
-## Hack-dash 2: <br> climate scenarios
-
-</script></section><section  data-markdown><script type="text/template">
 # Thank you!
 </script></section></div>
         </div>

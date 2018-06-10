@@ -134,7 +134,7 @@ def run_selection_label(filename):
 pattern = r'run_output_\d{2}.nc'
 temperature_options = []
 
-for file in os.listdir(data_directory):
+for file in sorted(os.listdir(data_directory)):
     if re.match(pattern, file):
         label = run_selection_label(file)
         temperature_options.append({

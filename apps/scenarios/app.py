@@ -3,6 +3,7 @@ import pickle
 import copy
 import datetime as dt
 import re
+from collections import OrderedDict
 
 import pandas as pd
 import xarray as xr
@@ -83,43 +84,42 @@ trace = dict(
 )
 traces.append(trace)
 
-glacier_properties= {
-    'length': {
+glacier_properties= OrderedDict()
+glacier_properties['length'] = {
         'name':'Length',
         'units':'km',
         'multiplier': 1e-3
-        },
-    'area': {
+        }
+glacier_properties['area'] = {
         'name':'Area',
         'units':'km\u00b2',
         'multiplier': 1e-6
-        },
-    'volume': {
+        }
+glacier_properties['volume'] = {
         'name':'Volume',
         'units':'km\u00b3',
         'multiplier': 1e-9
-        },
-    'temp': {
+        }
+glacier_properties['temp'] =  {
         'name':'Temperature',
         'units':'\u00b0C',
         'multiplier': 1
-        },
-    'prcp': {
+        }
+glacier_properties['prcp'] = {
         'name':'Precipitation',
         'units':'mm/year',
         'multiplier': 1
-        },
-    'prcp_sol': {
+        }
+glacier_properties['prcp_sol'] = {
         'name':'Solid Precipitation',
         'units':'mm/year',
         'multiplier': 1
-        },
-    'ela': {
+        }
+glacier_properties['ela'] = {
         'name':'Equilibrium Line Altitude',
         'units':'m above sea level',
         'multiplier': 1
         }
-}
 
 # Default colors for plots
 plot_colors = [

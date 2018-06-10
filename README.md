@@ -9,3 +9,7 @@ Companion repository to ECMWF's #OpenDataHack2018
 **Presentation**:
 
 http://oggm.org/OpenDataHack2018-Glaciers
+
+**Final application**:
+
+https://dash.klima.uni-bremen.de/

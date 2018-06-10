@@ -153,14 +153,14 @@ app.layout = html.Div(
                     [
                         dcc.Graph(id='main_graph')
                     ],
-                    className='eight columns',
+                    className='four columns',
                     style={'margin-top': '20'}
                 ),
                 html.Div(
                     [
                         dcc.Graph(id='individual_graph')
                     ],
-                    className='four columns',
+                    className='eight columns',
                     style={'margin-top': '20'}
                 ),
             ],
@@ -227,36 +227,23 @@ def make_individual_figure(main_graph_hover,run_selection):
 
     if main_graph_hover is None:
         main_graph_hover = {'points': [{'text': df.text.values[0]}]}
-
+    
     t = main_graph_hover['points'][0]['text']
     dff = df.loc[df.text == t]
+    rid = dff.rgi_id.values[0]
 
-    
-    # Return blank chart if no data available
-    if len(dff) == 0 or len(run_selection) == 0:
-        annotation = dict(
-            text='No data available',
-            x=0.5,
-            y=0.5,
-            align="center",
-            showarrow=False,
-            xref="paper",
-            yref="paper"
-        )
-        layout_individual['annotations'] = [annotation]
-        data = []
-
-        return dict(data=data, layout=layout_individual)
-    
-    if type(run_selection) == str:
+    # Make sure that the run selection is always formatted as a list
+    if len(run_selection) == 0:
+        run_selection = []
+    elif type(run_selection) == str:
         run_selection = [run_selection]
 
-    # Loop through each run in selected
+    # Loop through each run  selected
     data = []
     for run in run_selection:
 
         ds = xr.open_dataset(run)
-        rid = dff.rgi_id.values[0]
+        
         sel = ds.sel(rgi_id=rid).area * 1e-6
         data.append(
             go.Scatter(

@@ -66,8 +66,46 @@ layout = dict(
     )
 )
 
+glacier_properties= {
+    'length': {
+        'name':'Length',
+        'units':'km',
+        'multiplier': 1e-3
+        },
+    'area': {
+        'name':'Area',
+        'units':'km\u00b2',
+        'multiplier': 1e-6
+        },
+    'volume': {
+        'name':'Volume',
+        'units':'km\u00b3',
+        'multiplier': 1e-9
+        },
+    'temp': {
+        'name':'Temperature',
+        'units':'\u00b0C',
+        'multiplier': 1
+        },
+    'prcp': {
+        'name':'Precipitation',
+        'units':'mm/year',
+        'multiplier': 1
+        },
+    'prcp_sol': {
+        'name':'Solid Precipitation',
+        'units':'mm/year',
+        'multiplier': 1
+        },
+    'ela': {
+        'name':'Equilibrium Line Altitude',
+        'units':'m above sea level',
+        'multiplier': 1
+        }
+}
 
-def drop_down_label(filename):
+
+def run_selection_label(filename):
     """
     Returns the decriptive name to populate the drop-down menu for filename.
     """
@@ -82,12 +120,21 @@ temperature_options = []
 
 for file in os.listdir(directory):
     if re.match(pattern, file):
-        label = drop_down_label(file)
+        label = run_selection_label(file)
         temperature_options.append({
             'label': label,
             'value': os.path.join(directory , file)
             }
         )
+
+parameter_options = []
+for prop in glacier_properties.keys():
+    parameter_options.append(
+        {
+            'label': glacier_properties[prop]['name'],
+            'value': prop
+        }
+    )
 
 # Create app layout
 app.layout = html.Div(
@@ -137,14 +184,33 @@ app.layout = html.Div(
 
         html.Div(
             [
-                html.H5('Select temperature'),
-                dcc.Dropdown(
-                    id='run_selection',
-                    options=temperature_options,
-                    value=temperature_options[0]['value'],
-                    multi=True
+                html.Div(
+                    [
+                        html.H5('Select temperature'),
+                        dcc.Dropdown(
+                            id='run_selection',
+                            options=temperature_options,
+                            value=temperature_options[0]['value'],
+                            multi=True
+                        ),
+                    ],
+                    className='eight columns',
+                    style={'margin-top': '20'}
+                ),
+                html.Div(
+                    [
+                        html.H5('Select plot'),
+                        dcc.Dropdown(
+                            id='param_selection',
+                            options=parameter_options,
+                            value=parameter_options[0]['value'],
+                        ),
+                    ],
+                    className='four columns',
+                    style={'margin-top': '20'}
                 )
-            ]
+            ],
+            className='row'
         ),
 
         html.Div(
@@ -220,14 +286,18 @@ def make_main_figure(area_slider, main_graph_layout):
 # Main graph -> individual graph
 @app.callback(Output('individual_graph', 'figure'),
               [Input('main_graph', 'hoverData'),
-              Input('run_selection','value')])
-def make_individual_figure(main_graph_hover,run_selection):
+              Input('run_selection','value'),
+              Input('param_selection','value')])
+def make_individual_figure(main_graph_hover, run_selection, param_selection):
     
-    layout_individual = copy.deepcopy(layout)
-
     if main_graph_hover is None:
         main_graph_hover = {'points': [{'text': df.text.values[0]}]}
     
+    # Get the properties of the selected parameter
+    param_name = glacier_properties[param_selection]['name']
+    param_units = glacier_properties[param_selection]['units']
+    param_multiplier = glacier_properties[param_selection]['multiplier']
+
     t = main_graph_hover['points'][0]['text']
     dff = df.loc[df.text == t]
     rid = dff.rgi_id.values[0]
@@ -243,13 +313,14 @@ def make_individual_figure(main_graph_hover,run_selection):
     for run in run_selection:
 
         ds = xr.open_dataset(run)
+
         
-        sel = ds.sel(rgi_id=rid).area * 1e-6
+        sel = getattr(ds.sel(rgi_id=rid),param_selection) * param_multiplier
         data.append(
             go.Scatter(
                 type='scatter',
                 mode='lines+markers',
-                name=drop_down_label(run),
+                name=run_selection_label(run),
                 x=sel.time.data,
                 y=sel.data,
                 line=dict(
@@ -264,7 +335,7 @@ def make_individual_figure(main_graph_hover,run_selection):
     layout_graph = go.Layout(
         title=rid,
         xaxis=dict(title='Time (years)'),
-        yaxis=dict(title='Area (km\u00b2)'),
+        yaxis=dict(title='{} ({})'.format(param_name, param_units)),
         showlegend=True,
         legend=go.Legend(
                 x=0,
@@ -272,8 +343,7 @@ def make_individual_figure(main_graph_hover,run_selection):
             ),
             margin=go.Margin(l=40, r=0, t=40, b=30)
     )
-    layout_individual['title'] = rid + ': Area (km2)'
-
+    
     figure = dict(data=data, layout=layout_graph)
     return figure
 

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Create your own website with git and github-pages</title>
+        <link rel="stylesheet" href="./css/reveal.css">
+        <link rel="stylesheet" href="./white_nb.css" id="theme">
+        <link rel="stylesheet" href="./css/highlight/zenburn.css">
+        <link rel="stylesheet" href="./css/print/paper.css" type="text/css" media="print">
+
+
+    </head>
+    <body>
+
+        <div class="reveal">
+            <div class="slides"><section  data-markdown><script type="text/template">
+
+#### Open climate data seen by mountain glaciers as a natural low-pass filter
+
+<img align="center" width="30%" src="https://raw.githubusercontent.com/OGGM/oggm/master/docs/_static/logos/logo.png"/>
+
+[Fabien Maussion](http://fabienmaussion.info),
+[Patrick Leedham](https://github.com/PaleTomato)
+
+</script></section><section  data-markdown><script type="text/template">
+## How to use these slides
+
+- ``<space>`` : go to the next slide
+- ``<shift+space>``: go back
+- ``<left right up down arrows>``: navigate through the presentation structure
+- ``<esc>``: toggle overview mode
+
+</script></section><section ><section data-markdown><script type="text/template">
+## Problem
+
+- Glaciers allow people to perceive slow changes of the climate system
+  that would otherwise be superimposed by short-term noise  <!-- .element: class="fragment" -->
+- shrinking glaciers are an icon of climate change  <!-- .element: class="fragment" -->
+- glaciers are complex! <br> "The low-pass filter comes without a manual"  <!-- .element: class="fragment" -->
+</script></section><section data-markdown><script type="text/template">
+## Hack
+
+- create an educational and reactive web application showing the impact of
+  climate change on glaciers
+</script></section></section><section  data-markdown><script type="text/template">
+## Hack-dash 1: <br> world glacier explorer
+
+
+</script></section><section  data-markdown><script type="text/template">
+## Hack-dash 2: <br> climate scenarios
+
+</script></section><section  data-markdown><script type="text/template">
+# Thank you!
+</script></section></div>
+        </div>
+
+        <script src="./lib/js/head.min.js"></script>
+        <script src="./js/reveal.js"></script>
+
+        <script>
+            function extend() {
+              var target = {};
+              for (var i = 0; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                  if (source.hasOwnProperty(key)) {
+                    target[key] = source[key];
+                  }
+                }
+              }
+              return target;
+            }
+
+            // Optional libraries used to extend on reveal.js
+            var deps = [
+              { src: './lib/js/classList.js', condition: function() { return !document.body.classList; } },
+              { src: './plugin/markdown/marked.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+              { src: './plugin/markdown/markdown.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+              { src: './plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+              { src: './plugin/zoom-js/zoom.js', async: true },
+              { src: './plugin/notes/notes.js', async: true },
+              { src: './plugin/math/math.js', async: true }
+            ];
+
+            // default options to init reveal.js
+            var defaultOptions = {
+              controls: true,
+              progress: true,
+              history: true,
+              center: true,
+              transition: 'default', // none/fade/slide/convex/concave/zoom
+              dependencies: deps
+            };
+
+            // options from URL query string
+            var queryOptions = Reveal.getQueryHash() || {};
+
+            var options = {};
+            options = extend(defaultOptions, options, queryOptions);
+        </script>
+
+
+        <script>
+            Reveal.initialize(options);
+        </script>
+    </body>
+</html>

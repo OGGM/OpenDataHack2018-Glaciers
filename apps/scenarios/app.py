@@ -282,7 +282,7 @@ def make_individual_figure(main_graph_hover, run_selection, param_selection):
         data.append(
             go.Scatter(
                 type='scatter',
-                mode='lines+markers',
+                mode='lines',
                 name=run_selection_label(run),
                 x=sel.time.data,
                 y=sel.data,
